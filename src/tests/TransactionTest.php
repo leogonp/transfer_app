@@ -67,7 +67,8 @@ class TransactionTest extends TestCase
 
     }
 
-    public function testTransactionPayerShopkeeper(){
+    public function testTransactionPayerShopkeeper()
+    {
         $arrayDataPayer = [
                     'name' => Str::random(10),
                     'email' => Str::random(10).'@gmail.com',
@@ -106,7 +107,8 @@ class TransactionTest extends TestCase
     }
 
 
-    public function testTransactionInsufficientWallet(){
+    public function testTransactionInsufficientWallet()
+    {
         $arrayDataPayer = [
                     'name' => Str::random(10),
                     'email' => Str::random(10).'@gmail.com',
@@ -144,7 +146,8 @@ class TransactionTest extends TestCase
 
     }
 
-    public function testTransactionNonExistingPayer(){
+    public function testTransactionNonExistingPayer()
+    {
         $arrayDataPayee = [
                     'name' => Str::random(10),
                     'email' => Str::random(10).'@gmail.com',
@@ -167,7 +170,8 @@ class TransactionTest extends TestCase
         $payee->delete();
 
     }
-    public function testTransactionNonExistingPayee(){
+    public function testTransactionNonExistingPayee()
+    {
         $arrayDataPayer = [
                     'name' => Str::random(10),
                     'email' => Str::random(10).'@gmail.com',
@@ -192,7 +196,8 @@ class TransactionTest extends TestCase
 
 
 
-    public function testTransactionNonNumericValue(){
+    public function testTransactionNonNumericValue()
+    {
         $arrayDataPayer = [
                     'name' => Str::random(10),
                     'email' => Str::random(10).'@gmail.com',

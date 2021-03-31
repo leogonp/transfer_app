@@ -11,7 +11,8 @@ class PersonTest extends TestCase
      *
      * @return void
      */
-    public function testCreatePerson(){
+    public function testCreatePerson()
+    {
         $arrayData = [
             'name' => Str::random(10),
             'email' => Str::random(10).'@gmail.com',
@@ -44,7 +45,8 @@ class PersonTest extends TestCase
         ]);
     }
 
-    public function testViewPerson(){
+    public function testViewPerson()
+    {
         $person=DB::table('people')->orderBy('id')->first();
         $this->get("/person/".$person->id,['api-token' => env('API_TOKEN')]);
         $this->assertResponseOk();
@@ -57,7 +59,8 @@ class PersonTest extends TestCase
         $this->assertArrayHasKey('id',$content );
     }
 
-     public function testAllPeople(){
+     public function testAllPeople()
+     {
         $this->get("/people",['api-token' => env('API_TOKEN')]);
         $this->assertResponseOk();
         $this->seeJsonStructure([
@@ -73,7 +76,8 @@ class PersonTest extends TestCase
         ]);
     }
 
-    public function testUpdatePerson(){
+    public function testUpdatePerson()
+    {
         $data = [
             'name' => Str::random(10),
             'email' => Str::random(10).'TESTEUPDATE@gmail.com'
