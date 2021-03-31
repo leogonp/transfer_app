@@ -1,10 +1,6 @@
 <?php
 
-use Laravel\Lumen\Testing\DatabaseMigrations;
-use Laravel\Lumen\Testing\DatabaseTransactions;
-use App\Transaction;
-use App\Person;
-use Illuminate\Support\Facades\DB;
+use App\Model\Person;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -17,7 +13,8 @@ class TransactionTest extends TestCase
      */
 
 
-    public function testTransaction(){
+    public function testTransaction()
+    {
         $arrayDataPayer = [
                     'name' => Str::random(10),
                     'email' => Str::random(10).'@gmail.com',
@@ -54,7 +51,7 @@ class TransactionTest extends TestCase
         $this->assertArrayHasKey('transactionId',$content );
 
         $this->seeInDatabase("transactions",[
-             'payer_id' => $payer["id"], 
+             'payer_id' => $payer["id"],
              'payee_id' => $payee["id"]
         ]);
 
@@ -67,7 +64,7 @@ class TransactionTest extends TestCase
         $this->assertResponseOk();
         $payerDB->delete();
         $payeeDB->delete();
-        
+
     }
 
     public function testTransactionPayerShopkeeper(){
@@ -105,7 +102,7 @@ class TransactionTest extends TestCase
         $this->response->assertStatus(400);
         $payer->delete();
         $payee->delete();
-        
+
     }
 
 
@@ -144,7 +141,7 @@ class TransactionTest extends TestCase
         $this->response->assertStatus(400);
         $payer->delete();
         $payee->delete();
-        
+
     }
 
     public function testTransactionNonExistingPayer(){
@@ -168,7 +165,7 @@ class TransactionTest extends TestCase
         $this->post('/transaction', $arrayData,['api-token' => env('API_TOKEN')]);
         $this->response->assertStatus(404);
         $payee->delete();
-        
+
     }
     public function testTransactionNonExistingPayee(){
         $arrayDataPayer = [
@@ -230,6 +227,6 @@ class TransactionTest extends TestCase
         $this->response->assertStatus(422);
         $payer->delete();
         $payee->delete();
-        
+
     }
 }

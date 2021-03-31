@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Transaction;
-use App\CommonPerson;
-use App\ShopkeeperPerson;
-use App\Person;
+use App\Model\Transaction;
+use App\Utils\Messages;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -21,14 +19,16 @@ class TransactionController extends Controller
     public function __construct() {
         //
     }
-    public function view($id){
+    public function view(int $id): Response
+    {
         $result= Transaction::find($id);
-        return $result ? $result : new Response('Não existe o registro.',404);
+        return $result ? $result : new Response(Messages::NOT_FOUND_REGISTER,Response::HTTP_NOT_FOUND);
     }
-    public function delete($id){
+    public function delete(int $id): Response
+    {
         return Transaction::destroy($id)
-                ? new Response('Removido com sucesso',200)
-                : new Response('Falha ao remover',400);
+                ? new Response(Messages::DELETE_SUCCESSFUL,Response::HTTP_OK)
+                : new Response(Messages::DELETE_FAILURE,Response::HTTP_BAD_REQUEST);
     }
     /**
  * @OA\Swagger(
@@ -87,13 +87,10 @@ class TransactionController extends Controller
      *
      * )
      */
-    public function transaction(Request $request){
-        $this->validate($request, [
-             'payer' => 'required|integer',
-             'payee' => 'required|integer',
-             'value' => 'required|numeric'
-        ]);
-        $transaction =  new Transaction(["payer_id" => $request->payer, "payee_id" => $request->payee,"value" => $request->value]);
+    public function transaction(Request $request)
+    {
+        $this->getValidation($request);
+        $transaction =  new Transaction(["payer_id" => $request->input('payer'), "payee_id" =>$request->input('payee'),"value" => $request->input('value')]);
         try{
             $transaction->run();
         }
@@ -105,9 +102,15 @@ class TransactionController extends Controller
                 return response('{"message":"'.$e->getMessage().'"}' ,$e->getStatusCode() )->header('Content-Type', 'application/json');
             return response('{"message":"'.$e->getMessage().'"}' ,500 )->header('Content-Type', 'application/json');
         }
-        return response('{"message":"Transação realizada com sucesso.","transactionId":'.$transaction->id.'}',200)->header('Content-Type', 'application/json');
+        return response('{"message":"'.Messages::SUCCESSFUL_TRANSACTION.'","transactionId":'.$transaction->id.'}',200)->header('Content-Type', 'application/json');
     }
 
-
-    //
+    private function getValidation(Request $request): void
+    {
+        $this->validate($request, [
+            'payer' => 'required|integer',
+            'payee' => 'required|integer',
+            'value' => 'required|numeric'
+        ]);
+    }
 }
