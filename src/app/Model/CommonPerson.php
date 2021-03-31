@@ -20,7 +20,7 @@ class CommonPerson extends Person
         'password'
     ];
 
-    public function pay(Person $payee, $value){
+    public function pay(Person $payee, float $value){
         $this->wallet -=  $value;
         $payee->wallet +=  $value;
     }

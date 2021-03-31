@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Model\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -36,16 +36,17 @@ class UserController extends Controller
      *         required=true,
      *         @OA\JsonContent(ref="#/components/schemas/User")
      *     )
-     *     
+     *
      * )
      */
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         $this->validate($request, [
-             'login'    => 'required', 
+             'login'    => 'required',
              'password' => 'required'
         ]);
-        return User::where('email', $request->login)
-                    ->where('password', md5($request->password) )
+        return User::where('email', $request->input("login"))
+                    ->where('password', md5($request->input("password")))
                     ->firstOrFail()->api_token;
     }
     //

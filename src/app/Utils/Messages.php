@@ -12,6 +12,7 @@ class Messages
     public const DELETE_SUCCESSFUL = "Removido com sucesso";
     public const DELETE_FAILURE = "Falha ao remover";
     public const SUCCESSFUL_TRANSACTION = "Transação realizada com sucesso.";
+    public const USER_NOT_FOUND = "Usuário não encontrado";
 
 
 
