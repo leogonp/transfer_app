@@ -33,7 +33,7 @@ class TransactionController extends Controller
     /**
  * @OA\Swagger(
  *     schemes={"http"},
- *     host=API_HOST,
+ *     host=localhost/transfer_app/src/public,
  *     basePath="/",
  *     @OA\Info(
  *         version="1.0.0",
@@ -49,7 +49,7 @@ class TransactionController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/LunaProject/public/transaction",
+     *     path="/transfer_app/src/public/transaction",
      *     tags={"transaction"},
      *     summary="Realiza uma transferência monetária entre duas pessoas",
      *     operationId="transaction",

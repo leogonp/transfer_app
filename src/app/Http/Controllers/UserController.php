@@ -19,7 +19,7 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/LunaProject/public/login",
+     *     path="/transfer_app/src/public/login",
      *     tags={"user"},
      *     summary="Efetua o login e retorna o token para uso da api",
      *     operationId="user",
