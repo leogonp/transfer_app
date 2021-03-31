@@ -5,6 +5,7 @@ namespace App\Model;
 use App\Utils\Messages;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -27,20 +28,14 @@ class Person extends Model implements AuthenticatableContract, AuthorizableContr
         'password'
     ];
 
-    static public function getPerson($id){
+    static public function getPerson(int $id): Person
+    {
         try{
-            $person = Person::query()->findOrFail($id);
+            $shopkeeper = DB::table('people')->find($id)->shopkeeper;
         }catch(\Exception $e){
             abort(Response::HTTP_NOT_FOUND,Messages::USER_NOT_FOUND);
         }
-        if ( isset( $person->shopkeeper ) && $person->shopkeeper ){
-            $person = ShopkeeperPerson::findOrFail($id);
-
-        }
-        else{
-            $person = CommonPerson::findOrFail($id);
-        }
-        return $person;
+        return $shopkeeper ? ShopkeeperPerson::findOrFail($id) :  CommonPerson::findOrFail($id);
 
     }
 
