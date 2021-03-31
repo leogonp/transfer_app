@@ -27,7 +27,6 @@ class Transaction extends Model implements AuthenticatableContract, Authorizable
     protected $fillable = [
         'payer_id','payee_id','value'
     ];
-    private $authorized;
 
     /**
      * Payer id
