@@ -3,7 +3,6 @@ services:
   php:
     build: 
       context: .
-    image: lunaproject/leonam-php-mysql:1.0.0
     networks:
       - frontend
       - backend
@@ -13,7 +12,7 @@ services:
       - MYSQL_PASSWORD=secret
       - MYSQL_DB=lunaproject
     volumes:
-      - ./src/:/var/www/html/
+      - ./src/:/app
     ports:
       - "30001:80"
     container_name: leonam-php-app
