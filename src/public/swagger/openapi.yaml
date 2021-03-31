@@ -1,0 +1,25 @@
+openapi: 3.0.0
+info:
+  title: 'Swagger Integration with PHP Laravel'
+  description: 'Integrate Swagger in Laravel application'
+  termsOfService: ''
+  contact:
+    email: sachit.wadhawan@quovantis.com
+  version: 1.0.0
+paths:
+  /transaction:
+    post:
+      tags:
+        - transaction
+      summary: 'Add a transaction to database'
+      operationId: store
+      requestBody:
+        description: 'Created queue object'
+        required: true
+        content:
+          application/xml: {  }
+      responses:
+        '405':
+          description: 'Invalid input'
+        default:
+          description: 'successful operation'

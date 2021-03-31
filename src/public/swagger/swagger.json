@@ -1,0 +1,89 @@
+openapi: 3.0.0
+info:
+  title: 'Documenteção Api'
+  description: 'Interface de documentação e teste da api LunaProject'
+  termsOfService: ''
+  contact:
+    email: admin@lunaproject.com
+  version: 1.0.0
+paths:
+  /LunaProject/public/transaction:
+    post:
+      tags:
+        - transaction
+      summary: 'Realiza uma transferência monetária entre duas pessoas'
+      operationId: transaction
+      parameters:
+        -
+          name: api-token
+          in: header
+          description: 'Token de autenticação da api'
+          required: true
+      requestBody:
+        description: 'Json para envio'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        '200':
+          description: Sucesso
+        '404':
+          description: 'O pagador e/ou recebedor não existe no banco de dados.'
+        '400':
+          description: 'O pagador não tem saldo suficiente ou o pagador passado é um lojista. Informação detalhada no body do response.'
+        '401':
+          description: 'Transação não autorizada ou falha na autenticação da api.'
+        '500':
+          description: 'Erro interno da api. Entre em contato com o responsável.'
+  /LunaProject/public/login:
+    post:
+      tags:
+        - user
+      summary: 'Efetua o login e retorna o token para uso da api'
+      operationId: user
+      requestBody:
+        description: 'Json para envio'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Sucesso
+        '404':
+          description: 'Login/Senha errados'
+components:
+  schemas:
+    Transaction:
+      properties:
+        payer:
+          description: 'O id da pessoa que vai realizar o pagamento'
+          type: integer
+          default: 1
+        payee:
+          description: 'O id da pessoa que vai receber o pagamento'
+          type: integer
+          default: 2
+        value:
+          description: 'O valor a ser pago'
+          type: number
+          default: 100.5
+      type: object
+      xml:
+        name: Transaction
+    User:
+      properties:
+        login:
+          description: 'O endereço de email do usuário no cadastrado no banco'
+          type: string
+          default: login
+        password:
+          description: 'A senha do usuário.'
+          type: string
+          default: senha
+      type: object
+      xml:
+        name: User

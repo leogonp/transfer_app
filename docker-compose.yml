@@ -1,0 +1,46 @@
+version: "3.2"
+services:
+  php:
+    build: 
+      context: .
+    image: lunaproject/leonam-php-mysql:1.0.0
+    networks:
+      - frontend
+      - backend
+    environment:
+      - MYSQL_HOST=leonam-mysql-app
+      - MYSQL_USER=luna
+      - MYSQL_PASSWORD=secret
+      - MYSQL_DB=lunaproject
+    volumes:
+      - ./src/:/var/www/html/
+    ports:
+      - "30001:80"
+    container_name: leonam-php-app
+  mysql:
+    image: mysql:5.7
+    networks:
+      - backend
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=luna
+      - MYSQL_PASSWORD=secret 
+      - MYSQL_DATABASE=lunaproject
+    container_name: leonam-mysql-app
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:4.7
+    depends_on:
+      - mysql
+    networks:
+      - backend
+    ports:
+      - "30002:80"
+    environment:
+      - PMA_HOST=leonam-mysql-app
+      - PMA_PORT= 3306
+    volumes:
+      - /sessions
+    container_name: leonam-phpmyadmin-app
+networks:
+  frontend:
+  backend:
