@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Model\Person;
+use App\Utils\Messages;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -17,38 +18,39 @@ class PersonController extends Controller
         //
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $person = new Person($request->all());
-        return $person->save() ? $person : new Response('Erro ao inserir.',400);
+        return $person->save() ? $person : new Response(Messages::INSERT_ERROR,Response::HTTP_BAD_REQUEST);
     }
 
-    public function view($id){
+    public function view(int $id)
+    {
         $result= Person::find($id);
-        return $result ? $result : new Response('Não existe o registro.',404);
+        return $result ? $result : new Response(Messages::NOT_FOUND_REGISTER,Response::HTTP_NOT_FOUND);
     }
 
     public function list(){
         return Person::all();
     }
 
-    public function update(Request $request,$id){
+    public function update(Request $request, int $id)
+    {
         $person = Person::find($id);
         if($person){
             $person->name       = $request->input("name");
             $person->email      = $request->input("email");
+            return $person->update() ? $person : new Response(Messages::UPDATE_ERROR,Response::HTTP_BAD_REQUEST);
 
-            if($person->update()){
-                return $person;
-            }
-            return new Response('Erro ao atualizar.',400);
         }
-        return new Response('Não existe o registro.',404);
+        return new Response(Messages::NOT_FOUND_REGISTER,Response::HTTP_NOT_FOUND);
 
     }
-    public function delete($id){
+    public function delete(int $id)
+    {
         return Person::destroy($id)
-            ? new Response('Removido com sucesso',200)
-            : new Response('Falha ao remover',400);
+            ? new Response(Messages::DELETE_SUCCESSFUL,Response::HTTP_OK)
+            : new Response(Messages::DELETE_FAILURE,Response::HTTP_BAD_REQUEST);
     }
 
     //
