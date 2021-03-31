@@ -18,7 +18,7 @@ use App\Utils\Messages;
     /**
      * @OA\Schema(@OA\Xml(name="Transaction"), @OA\Parameter(ref="#/components/schemas/Transaction"))
      */
-class Transaction extends Model implements AuthenticatableContract, AuthorizableContract
+class ransaction extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable;
     private const AUTHORIZER_URL = "https://run.mocky.io/v3/8fafdd68-a090-496f-8c9a-3442cf30dae6";
