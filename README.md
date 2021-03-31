@@ -1,4 +1,4 @@
-# LunaProject
+# Transfer App
 
 Essa API possui um endpoint que gerencia a transferência monetária entre dois usuários.
 Abaixo estão algumas dicas para instalação e configuração do projeto.
@@ -7,11 +7,11 @@ Abaixo estão algumas dicas para instalação e configuração do projeto.
 
 ### Clonando o repositório
 
-    git clone https://github.com/leogonp/LunaProject.git
+    git clone https://github.com/leogonp/transfer_app.git
 
 ### Instalando as bibliotecas
 
-    cd LunaProject
+    cd transfer_app/src
     composer install
 
 ## Configurações do ambiente
