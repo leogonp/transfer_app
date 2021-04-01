@@ -9,27 +9,23 @@ Abaixo estão algumas dicas para instalação e configuração do projeto.
 
     git clone https://github.com/leogonp/transfer_app.git
 
-### Instalando as bibliotecas
-
-    cd transfer_app/src
-    composer install
-
 ## Configurações do ambiente
 
-Crie um .env, utilizando o .env.example como referência.
-Preencha todas as informações de acordo com o ambiente de onde será rodada a aplicação.  
+Crie um .env dentro da pasta src, utilizando o .env.example como referência.
 
-### Criando as tabelas
+### Instalando as bibliotecas e subindo o container
+Dentro da pasta `transfer_app`, execute o seguinte comando para poder subir a o container da aplicação:
+    
+    make run
 
-	php artisan migrate
- 
- Caso queira também seedar as tabelas com dados de teste, rode com o parametro --seed
-
-	php artisan migrate --seed
+A aplicação rodará na porta 30001.
 
 ### Rodando os testes
 
-    ./run-tests.sh
+Para rodar os testes unitários, basta rodar o comando abaixo:
+
+    make test
+IMPORTANTE: O teste executa operações de checagens de persistência no banco. Ele não pode ser rodado em banco de produção.
 
 ## Autenticação
 Para utilização da api, é necessário enviar um token via header. 
@@ -44,6 +40,17 @@ Para utilização da api, é necessário enviar um token via header.
         "password" : "SENHA"
     }
 
+### CURL
+Exemplo de cURL:
+
+        curl --location --request POST 'http://localhost:30001/login' \
+        --header 'Content-Type: application/json' \
+        --data-raw '{
+            "login" : "admin@admin.com",
+            "password" : "secretPass"
+        }'
+    
+
 O retorno do endpoint será um token que poderá ser usado no endpoint de transferência.
 
 ## Transferência
@@ -52,18 +59,32 @@ Abaixo está um exemplo de uso do endpoint.
 `POST /transaction`
 
 ### Header
+O token obtido no login deve ser passado como api-token no header:
 
     api-token:TOKENGERADONOLOGIN
 
 ### Body
+O body deve ter a seguinte forma:
 
     {
     	"value" : 3.50,
     	"payer" : 2,
     	"payee" : 15
 	}
+Onde, `value` será o valor a ser pago, `payer` o id do pagador  e `payee` o id do recebedor.
+
+###cURL
+    curl --location --request POST 'http://localhost:30001/transaction' \
+            --header 'api-token: nBqDzt0XIHzaOZ0LXNYjm7xyjt30H42DNdiE9PWbGx0nVs8SkGoHlSbG7FKx7erztCrlw3wrcvsarUN5' \
+            --header 'Content-Type: application/json' \
+            --data-raw '{
+            "value" : 2.50,
+            "payer" : 1,
+            "payee" : 15
+            }'
 
 ### Response
+Se tudo ocorrer com sucesso, a resposta terá com código http 200 e uma mensagem no seguinte formato:
 
     {
     	"message": "Transação realizada com sucesso.",
@@ -74,4 +95,4 @@ Abaixo está um exemplo de uso do endpoint.
 ## Documentação
 Para mais detalhes sobre a aplicação, acesse o endpoint:
 
-	/public/swagger
+	/swagger/index.html

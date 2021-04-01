@@ -1,13 +1,13 @@
 openapi: 3.0.0
 info:
   title: 'Documenteção Api'
-  description: 'Interface de documentação e teste da api LunaProject'
+  description: 'Interface de documentação e teste da api transfer_app'
   termsOfService: ''
   contact:
     email: admin@lunaproject.com
   version: 1.0.0
 paths:
-  /transfer_app/src/public/transaction:
+  /transaction:
     post:
       tags:
         - transaction
@@ -37,7 +37,7 @@ paths:
           description: 'Transação não autorizada ou falha na autenticação da api.'
         '500':
           description: 'Erro interno da api. Entre em contato com o responsável.'
-  /transfer_app/src/public/login:
+  /login:
     post:
       tags:
         - user

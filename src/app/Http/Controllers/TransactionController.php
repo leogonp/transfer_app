@@ -38,7 +38,7 @@ class TransactionController extends Controller
     /**
      * @OA\Swagger(
      *     schemes={"http"},
-     *     host=localhost/transfer_app/src/public,
+     *     host=localhost:30001,
      *     basePath="/",
      *     @OA\Info(
      *         version="1.0.0",
@@ -104,7 +104,7 @@ class TransactionController extends Controller
             return response('{"message":"' . $e->getMessage() . '"}', Response::HTTP_NOT_FOUND)->header('Content-Type', 'application/json');
         } catch (\Exception $e) {
             if (method_exists($e, 'getStatusCode'))
-                return response('{"message22222":"' . $e->getMessage() . '"}', $e->getStatusCode())->header('Content-Type', 'application/json');
+                return response('{"message":"' . $e->getMessage() . '"}', $e->getStatusCode())->header('Content-Type', 'application/json');
             return response('{"message":"' . $e->getMessage() . '"}', Response::HTTP_BAD_REQUEST)->header('Content-Type', 'application/json');
         }
         return response('{"message":"' . Messages::SUCCESSFUL_TRANSACTION . '","transactionId":' . $transaction->id . '}', 200)->header('Content-Type', 'application/json');

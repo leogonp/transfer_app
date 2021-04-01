@@ -41,7 +41,7 @@
       var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
       // Build a system
       const ui = SwaggerUIBundle({
-        url: url = baseUrl+"/swagger.json",
+        url: url = baseUrl+"/swagger.yaml",
         dom_id: '#swagger-ui',
         deepLinking: true,
         presets: [
