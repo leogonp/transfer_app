@@ -73,7 +73,7 @@ O body deve ter a seguinte forma:
 	}
 Onde, `value` será o valor a ser pago, `payer` o id do pagador  e `payee` o id do recebedor.
 
-###cURL
+### cURL
 
     curl --location --request POST 'http://localhost:30001/transaction' \
             --header 'api-token: nBqDzt0XIHzaOZ0LXNYjm7xyjt30H42DNdiE9PWbGx0nVs8SkGoHlSbG7FKx7erztCrlw3wrcvsarUN5' \
