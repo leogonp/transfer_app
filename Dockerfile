@@ -5,6 +5,7 @@ ARG USER=nginx
 RUN apk --update add \
         nginx \
         curl \
+        supervisor \
     && rm -rf /var/cache/apk/* \
     && docker-php-ext-install \
 	    mysqli \
@@ -16,10 +17,13 @@ RUN apk --update add \
 
 COPY --chown=${USER}:${USER} files/default.conf /etc/nginx/http.d/default.conf
 COPY --chown=${USER}:${USER} src/ /app
+COPY --chown=${USER}:${USER} files/supervisord.conf /etc/supervisord.conf
+COPY --chown=${USER}:${USER} --chmod=500 files/entrypoint /entrypoint
 
 USER $USER
 
 WORKDIR /app
-RUN composer install --no-autoloader
+RUN composer install
 
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["/bin/sh", "/entrypoint"]
+CMD ["/usr/bin/supervisord"]

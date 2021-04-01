@@ -19,7 +19,7 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/transfer_app/src/public/login",
+     *     path="/login",
      *     tags={"user"},
      *     summary="Efetua o login e retorna o token para uso da api",
      *     operationId="user",

@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+
+while ! nc -z mysql 3306; do echo "Waiting for mysql to be ready!" && sleep 3; done
+
+php artisan migrate:fresh --seed
+
+exec "$@"

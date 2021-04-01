@@ -16,40 +16,45 @@ class TransactionController extends Controller
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
         //
     }
+
     public function view(int $id): Response
     {
-        $result= Transaction::find($id);
-        return $result ? $result : new Response(Messages::NOT_FOUND_REGISTER,Response::HTTP_NOT_FOUND);
+        $result = Transaction::find($id);
+        return $result
+            ? new Response($result, Response::HTTP_OK)
+            : new Response(Messages::NOT_FOUND_REGISTER, Response::HTTP_NOT_FOUND);
     }
+
     public function delete(int $id): Response
     {
         return Transaction::destroy($id)
-                ? new Response(Messages::DELETE_SUCCESSFUL,Response::HTTP_OK)
-                : new Response(Messages::DELETE_FAILURE,Response::HTTP_BAD_REQUEST);
+            ? new Response(Messages::DELETE_SUCCESSFUL, Response::HTTP_OK)
+            : new Response(Messages::DELETE_FAILURE, Response::HTTP_BAD_REQUEST);
     }
     /**
- * @OA\Swagger(
- *     schemes={"http"},
- *     host=localhost/transfer_app/src/public,
- *     basePath="/",
- *     @OA\Info(
- *         version="1.0.0",
- *         title="Documenteção Api",
- *         description="Interface de documentação e teste da api LunaProject",
- *         termsOfService="",
- *         @OA\Contact(
- *             email="admin@lunaproject.com"
- *         ),
- *     ),
- * )
- */
+     * @OA\Swagger(
+     *     schemes={"http"},
+     *     host=localhost/transfer_app/src/public,
+     *     basePath="/",
+     *     @OA\Info(
+     *         version="1.0.0",
+     *         title="Documenteção Api",
+     *         description="Interface de documentação e teste da api LunaProject",
+     *         termsOfService="",
+     *         @OA\Contact(
+     *             email="admin@lunaproject.com"
+     *         ),
+     *     ),
+     * )
+     */
 
     /**
      * @OA\Post(
-     *     path="/transfer_app/src/public/transaction",
+     *     path="/transaction",
      *     tags={"transaction"},
      *     summary="Realiza uma transferência monetária entre duas pessoas",
      *     operationId="transaction",
@@ -69,7 +74,7 @@ class TransactionController extends Controller
      *         response=401,
      *         description="Transação não autorizada ou falha na autenticação da api."
      *     ),
-      *     @OA\Response(
+     *     @OA\Response(
      *         response=500,
      *         description="Erro interno da api. Entre em contato com o responsável."
      *     ),
@@ -86,23 +91,23 @@ class TransactionController extends Controller
      *     )
      *
      * )
+     * @param Request $request
+     * @return Response|\Laravel\Lumen\Http\ResponseFactory
      */
     public function transaction(Request $request)
     {
         $this->getValidation($request);
-        $transaction =  new Transaction(["payer_id" => $request->input('payer'), "payee_id" =>$request->input('payee'),"value" => $request->input('value')]);
-        try{
+        $transaction = new Transaction(["payer_id" => $request->input('payer'), "payee_id" => $request->input('payee'), "value" => $request->input('value')]);
+        try {
             $transaction->run();
-        }
-        catch(ModelNotFoundException $e){
-            return response('{"message":"'.$e->getMessage().'"}' ,404)->header('Content-Type', 'application/json');
-        }
-        catch(\Exception $e){
+        } catch (ModelNotFoundException $e) {
+            return response('{"message":"' . $e->getMessage() . '"}', Response::HTTP_NOT_FOUND)->header('Content-Type', 'application/json');
+        } catch (\Exception $e) {
             if (method_exists($e, 'getStatusCode'))
-                return response('{"message":"'.$e->getMessage().'"}' ,$e->getStatusCode() )->header('Content-Type', 'application/json');
-            return response('{"message":"'.$e->getMessage().'"}' ,500 )->header('Content-Type', 'application/json');
+                return response('{"message22222":"' . $e->getMessage() . '"}', $e->getStatusCode())->header('Content-Type', 'application/json');
+            return response('{"message":"' . $e->getMessage() . '"}', Response::HTTP_BAD_REQUEST)->header('Content-Type', 'application/json');
         }
-        return response('{"message":"'.Messages::SUCCESSFUL_TRANSACTION.'","transactionId":'.$transaction->id.'}',200)->header('Content-Type', 'application/json');
+        return response('{"message":"' . Messages::SUCCESSFUL_TRANSACTION . '","transactionId":' . $transaction->id . '}', 200)->header('Content-Type', 'application/json');
     }
 
     private function getValidation(Request $request): void
